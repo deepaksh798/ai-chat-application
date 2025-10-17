@@ -2,7 +2,9 @@
 import os
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-import google.generativeai as genai
+import google.generativeai as genai 
+from models.chat_model import Chat
+from app.database import db
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
 
@@ -26,6 +28,11 @@ async def chat_with_gemini(body: ChatRequest):
     try:
         model = genai.GenerativeModel("gemini-2.5-flash")
         resp = model.generate_content(prompt)
-        return ChatResponse(answer=getattr(resp, "text", str(resp)))
+        answer = getattr(resp, "text", str(resp))
+
+        chat_data = Chat(prompt=prompt, response=answer)
+        await db.chats.insert_one(chat_data.dict())
+
+        return ChatResponse(answer=answer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
