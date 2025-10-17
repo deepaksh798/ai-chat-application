@@ -1,0 +1,21 @@
+# Virtual environments
+venv/
+.env/
+env/
+
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# VS Code settings
+.vscode/
+
+# Environment variable files (if used)
+.env
+
+# Build and distribution directories
+build/
+dist/
+*.egg
+*.egg-info/
