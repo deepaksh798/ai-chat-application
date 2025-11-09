@@ -3,5 +3,5 @@ export const ENDPOINTS = {
   LOGIN: "login",
   SIGNUP: "signup",
   // Chat Endpoint
-  CHAT: "chat",
+  CHAT: "chat/",
 };

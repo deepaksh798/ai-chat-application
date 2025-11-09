@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { getToken } from "@/_utils/cookies";
 import Navbar from "./Navbar";
+import PopupInfo from "./PopupInfo";
 
 interface Props {
   children: ReactNode;
@@ -53,9 +54,12 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   if (isAuthenticated) {
     return (
       <div className="h-screen flex overflow-hidden">
+        <PopupInfo />
         <div className="flex-1 flex flex-col">
-          <Navbar />
-          <div className=" h-full overflow-y-scroll">{children}</div>
+          <div className="fixed bg-transparent px-6 py-5">
+            <Navbar />
+          </div>
+          <div className=" h-full overflow-hidden">{children}</div>
         </div>
       </div>
     );
@@ -63,7 +67,12 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
 
   // Allow unauthenticated users to access /login
   if (!isAuthenticated && pathname === "/login") {
-    return <>{children}</>;
+    return (
+      <>
+        <PopupInfo />
+        {children}
+      </>
+    );
   }
 
   // Otherwise render nothing
